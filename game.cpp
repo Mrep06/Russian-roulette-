@@ -13,15 +13,20 @@ int countSurvivors(const vector<bool>& alive);
 void displayHand(const vector<char>& hand);
 void dealNewHands(vector<vector<char>>& hands, vector<char>& deck, int numPlayers);
 void gameLoop(vector<string>& players, int numPlayers);
-void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck, vector<string>& players, vector<bool>& alive, vector<char>& tableCards, vector<char>& discardedCards, int& roundCount, bool& changeRound, vector<int>& shootCount,int numPlayers,char tableCard);
-bool challengePlayer(int currentPlayer, int nextPlayer, vector<char>& tableCards, vector<vector<char>>& hands, vector<string>& players, vector<bool>& alive, vector<char>& discardedCards, int& roundCount, vector<int>& shootCount,char tableCard);
-void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<string>& players, vector<bool>& alive, int& roundCount, vector<int>& shootCount,char tableCard);
+void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck, vector<string>& players, vector<bool>& alive, vector<char>& tableCards, vector<char>& discardedCards, int& roundCount, bool& changeRound, vector<int>& shootCount,int numPlayers);
+bool challengePlayer(int currentPlayer, int nextPlayer, vector<char>& tableCards, vector<vector<char>>& hands, vector<string>& players, vector<bool>& alive, vector<char>& discardedCards, int& roundCount, vector<int>& shootCount);
+void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<string>& players, vector<bool>& alive, int& roundCount, vector<int>& shootCount);
 bool checkIfAllHandsEmpty(const vector<vector<char>>& hands);
 void reshuffleDeck(vector<char>& deck, vector<char>& discardedCards);
 bool checkIfHandEmpty(const vector<vector<char>>& hands,int currentPlayer);
 
+
+
+
+
 int main() {
     srand(time(0));
+    
     cout << "Welcome to Liar's Bar!" << endl;
 
     vector<string> players;
@@ -46,22 +51,29 @@ int main() {
     return 0;
 }
 
+vector<char> tableCards{'Q', 'K', 'A'};
+bool changeRound = false;
+char tableCard ;
 void gameLoop(vector<string>& players, int numPlayers) {
     int currentPlayer = 0;
     bool gameRunning = true;
     vector<bool> alive(numPlayers, true);
-    vector<char> tableCards{'Q', 'K', 'A'};
     vector<char> discardedCards;
     int roundCount = 1;
-    vector<vector<char>> hands(numPlayers);
-    vector<char> deck = createDeck();
+    vector<vector<char>> hands(numPlayers); 
+    vector<char> deck = createDeck();  // deck
     vector<int> shootCount(numPlayers, 0);  // เก็บจำนวนการยิงของผู้เล่นแต่ละคน
+
+    tableCard = tableCards[rand() % tableCards.size()];
     cout << "\n=== Round " << roundCount << " ===" << endl;
-    char tableCard = tableCards[rand() % tableCards.size()];
     cout << "The table card is set. Players must claim to play: " << tableCard << endl;
-        dealNewHands(hands, deck, players.size());
+
+    dealNewHands(hands, deck, players.size());
+
     while (gameRunning) {
-        if (countSurvivors(alive) == 1) {
+        int survivors = countSurvivors(alive);
+        if (survivors == 1) {
+            // แสดงผู้ชนะเมื่อเหลือผู้เล่นคนเดียว
             for (int i = 0; i < numPlayers; ++i) {
                 if (alive[i]) {
                     cout << players[i] << " is the winner!" << endl;
@@ -72,33 +84,32 @@ void gameLoop(vector<string>& players, int numPlayers) {
             break;
         }
 
-        bool changeRound = false;
+        // ถ้ามีผู้เล่นยังเหลือ
         while (!alive[currentPlayer]) {
             currentPlayer = (currentPlayer + 1) % numPlayers;
         }
 
-
-        playTurn(currentPlayer, hands, deck, players, alive, tableCards, discardedCards, roundCount, changeRound, shootCount,numPlayers,tableCard);
-
+        playTurn(currentPlayer, hands, deck, players, alive, tableCards, discardedCards, roundCount, changeRound, shootCount, numPlayers);
         reshuffleDeck(deck, discardedCards);
 
         if (changeRound) {
+            dealNewHands(hands, deck, numPlayers);
+            reshuffleDeck(deck, discardedCards);
+
             roundCount++;
-            if (roundCount > 1) {
+            if (roundCount > 1 && countSurvivors(alive) > 1) {
                 tableCard = tableCards[rand() % tableCards.size()];
                 cout << "\n=== Round " << roundCount << " ===" << endl;
                 cout << "The table card is set. Players must claim to play: " << tableCard << endl;
             }
-            
-            dealNewHands(hands, deck, numPlayers);
         }
 
         if (checkIfAllHandsEmpty(hands)) {
             cout << "\nAll hands are empty! Starting a new round..." << endl;
             tableCard = tableCards[rand() % tableCards.size()];
             dealNewHands(hands, deck, numPlayers);
+            reshuffleDeck(deck, discardedCards);
             roundCount++;
-
             cout << "\n=== Round " << roundCount << " ===" << endl;
             cout << "The table card is set. Players must claim to play: " << tableCard << endl;
         }
@@ -107,17 +118,22 @@ void gameLoop(vector<string>& players, int numPlayers) {
     }
 }
 
-void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck, vector<string>& players, vector<bool>& alive, vector<char>& tableCards, vector<char>& discardedCards, int& roundCount, bool& changeRound, vector<int>& shootCount,int numPlayers,char tableCard) {
+
+void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck, vector<string>& players, vector<bool>& alive, vector<char>& tableCards, vector<char>& discardedCards, int& roundCount, bool& changeRound, vector<int>& shootCount,int numPlayers) {
     //if (hands[currentPlayer].empty()) {dealNewHands(hands, deck, players.size());}
     
     if (checkIfHandEmpty(hands , currentPlayer)){
         currentPlayer = (currentPlayer + 1) % numPlayers;
     }
-    
+
+
+
     string player = players[currentPlayer];
     cout << "\n" << player << "'s turn!" << endl;
     cout << "Your hand: ";
     displayHand(hands[currentPlayer]);
+
+
 
     int numCards;
     do {
@@ -129,6 +145,9 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
         }
     } while (numCards < 1 || numCards > 3);
 
+
+
+//การรับไพ่ที่ผู้เล่นต้องการลง และตรวจสอบว่าไพ่ที่เลือกเป็นไพ่ที่ผู้เล่นมีอยู่จริงหรือไม่ หากไม่มี จะให้ผู้เล่นกรอกใหม่   
     vector<char> inputCards;
     char cardInput;
     cout << "Enter the cards you claim to play (e.g., Q K A): ";
@@ -151,6 +170,7 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
     while (!valid || inputCards.size() != numCards) {
         cout << "You don't have those cards! Please enter valid cards (e.g., Q K A): ";
         getline(cin, input);
+        cin.ignore();
         stringstream ss(input);
         inputCards.clear();
         while (ss >> cardInput) {
@@ -170,6 +190,8 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
         hands[currentPlayer].erase(find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card));
         discardedCards.push_back(card);
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    
 
     int nextPlayer = (currentPlayer + 1) % players.size();
     while (!alive[nextPlayer]) {
@@ -182,34 +204,62 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
     cin.ignore();
 
     if (challenge == 'X' || challenge == 'x') {
-        if (challengePlayer(currentPlayer, nextPlayer, tableCards, hands, players, alive, discardedCards, roundCount, shootCount,tableCard)) {
+        if (challengePlayer(currentPlayer, nextPlayer, tableCards, hands, players, alive, discardedCards, roundCount, shootCount)) {
             changeRound = true;
+        
         }
     }
+    else{
+        changeRound = false;
+    }
+    
+    
 }
 
-bool challengePlayer(int currentPlayer, int nextPlayer, vector<char>& tableCards, vector<vector<char>>& hands, vector<string>& players, vector<bool>& alive, vector<char>& discardedCards, int& roundCount, vector<int>& shootCount,char tableCard) {
+bool challengePlayer(int currentPlayer, int nextPlayer, vector<char>& tableCards, vector<vector<char>>& hands, vector<string>& players, vector<bool>& alive, vector<char>& discardedCards, int& roundCount, vector<int>& shootCount) {
     cout << players[nextPlayer] << " is challenging " << players[currentPlayer] << "'s play!" << endl;
 
+    // ตรวจสอบว่าไพ่ที่ claim ถูกต้องตามหัวโต๊ะหรือไม่
+
     bool lying = false;
+    changeRound = true; // เปลี่ยน round ทุกรอบเมื่อ challenge
+
+    // ตรวจสอบการ์ดที่ claim โดยใช้ tableCard
     for (char card : discardedCards) {
-        if (card != tableCard && card != 'J') {
+        if (card != tableCard && card != 'J') {  // ถ้าไม่ใช่การ์ดที่ตั้งโต๊ะและไม่ใช่ 'J' (การโกหก)
             lying = true;
             break;
         }
     }
-	
 
-    processChallenge(lying, currentPlayer, nextPlayer, players, alive, roundCount, shootCount,tableCard);
+    if (lying) {
+        cout << players[currentPlayer] << " was lying!" << endl;
+    } else {
+        cout << players[currentPlayer] << " was honest!" << endl;
+    }
+
+    
+    processChallenge(lying, currentPlayer, nextPlayer, players, alive, roundCount, shootCount);
     return lying;
 }
 
-void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<string>& players, vector<bool>& alive, int& roundCount, vector<int>& shootCount,char tableCard) {
+
+
+
+// กระบวนการลงโทษผู้โกหก
+void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<string>& players, vector<bool>& alive, int& roundCount, vector<int>& shootCount) {
     int victimIndex = lying ? currentPlayer : nextPlayer;
+    
+    // ผู้ที่ท้าทายผิดจะต้องถูกยิง
+    if (!lying) {
+        victimIndex = nextPlayer;  // ถ้าผู้ท้าทายผิด, ผู้ท้าทายจะถูกยิง
+    }
+
     cout << players[victimIndex] << " must take a bullet!" << endl;
 
+    // เกมยิงลูกกระสุน
     int russianRoulette = rand() % 6 + 1;
-    int chanceToShoot = 1 + shootCount[victimIndex];  // เพิ่มความเสี่ยงตามจำนวนการยิงของผู้เล่น
+    int chanceToShoot = 1 + shootCount[victimIndex];  // ความเสี่ยงที่เพิ่มขึ้นตามจำนวนการยิง
 
     cout << players[victimIndex] << " faces a " << chanceToShoot << "/6 chance to be shot!" << endl;
 
@@ -220,8 +270,9 @@ void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<stri
         cout << "CLICK! No bullet. " << players[victimIndex] << " survives." << endl;
     }
 
-    shootCount[victimIndex]++;  // เพิ่มจำนวนครั้งที่ยิงของผู้เล่นคนนั้น
+    shootCount[victimIndex]++;  // เพิ่มจำนวนครั้งที่ยิงของผู้เล่น
 }
+
 
 bool checkIfAllHandsEmpty(const vector<vector<char>>& hands) {
     for (const auto& hand : hands) {
@@ -238,9 +289,11 @@ bool checkIfHandEmpty(const vector<vector<char>>& hands,int currentPlayer) {
     return false;
 }
 
+
+// นำไพ่ที่ถูกทิ้งกลับเข้าไปในdeck
 void reshuffleDeck(vector<char>& deck, vector<char>& discardedCards) {
     deck.insert(deck.end(), discardedCards.begin(), discardedCards.end());
-    random_shuffle(deck.begin(), deck.end());
+    shuffle(deck.begin(), deck.end(), default_random_engine(time(0)));
     discardedCards.clear();
 }
 
@@ -253,7 +306,7 @@ vector<char> createDeck() {
     }
     deck.push_back('J');
     deck.push_back('J');
-    random_shuffle(deck.begin(), deck.end());
+    shuffle(deck.begin(), deck.end(), default_random_engine(time(0)));
     return deck;
 }
 
@@ -266,20 +319,26 @@ int countSurvivors(const vector<bool>& alive) {
 }
 
 void displayHand(const vector<char>& hand) {
+    
     for (char card : hand) {
         cout << card << " ";
     }
     cout << endl;
 }
 
+
+
+
+//แจกไพ่ให้ผู้เล่นใหม่
 void dealNewHands(vector<vector<char>>& hands, vector<char>& deck, int numPlayers) {
-    shuffle(deck.begin(), deck.end(), default_random_engine(time(0)));
-    
-    for (int i = 0; i < numPlayers; ++i) {
-        hands[i].clear(); 
-        for (int j = 0; j < 5; ++j) { 
-            hands[i].push_back(deck.back());
+    for (auto& hand : hands) {
+        while (hand.size() < 5 && !deck.empty()) {
+            hand.push_back(deck.back());
             deck.pop_back();
         }
     }
 }
+
+
+
+
