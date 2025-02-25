@@ -428,7 +428,3 @@ void drawscena(int player,string action,bool alive = true){
     }
 }
     
-int main() {
-
-    return 0;
-}
