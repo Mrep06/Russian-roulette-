@@ -5,6 +5,7 @@ void drawscena(int player,string action,bool alive = true){
     if(action == "PLAYCARD"){
         switch(player){
             case 1:
+                cout << endl;
                 cout << "        XXXXXXXXX        " << endl;
                 cout << "     XXX         XXX     " << endl;
                 cout << "   XX               XX   " << endl;
@@ -28,34 +29,38 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "   X  X            X  X  " << endl;
                 cout << "   X  X            X  X  " << endl;
                 cout << "   X  X            X  X  " << endl;
+                cout << endl;
                 break;
                     
             case 2:
+                cout << endl;
                 cout << "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    " << endl;
-                    cout << "    X                            X    " << endl;
-                    cout << "    X                            X    " << endl;
-                    cout << "XXXXX    XXXXX          XXXXX    XXXXX" << endl;
-                    cout << "X   X    X   X          X   X    X   X" << endl;
-                    cout << "X   X    X   X          X   X    X   X" << endl;
-                    cout << "X   X    XXXXX          XXXXX    X   X" << endl;
-                    cout << "XXXXX                            XXXXX" << endl;
-                    cout << "    X         XXXXXXXXXX         X    " << endl;
-                    cout << "    X                            X    " << endl;
-                    cout << "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    " << endl;
-                    cout << "                 X  X                  " << endl;
-                    cout << "           XXXXXXXXXXXXXXXX           " << endl;
-                    cout << "        XXXX              XXXX        " << endl;
-                    cout << "        X  X              X  X        " << endl;
-                    cout << "        XXXX              XXXX        " << endl;
-                    cout << "        X  X              X  X        " << endl;
-                    cout << "        X  X              X  X        " << endl;
-                    cout << "        XXXX              XXXX        " << endl;
-                    cout << "        X  X  XXXXXXXXXX  X  X        " << endl;
-                    cout << "        X  X  X        X  X  X        " << endl;
-                    cout << "        X  X  X        X  X  X        " << endl;
-                    cout << "        XXXXXXXXXXXXXXXXXXXXXX        " << endl;
+                cout << "    X                            X    " << endl;
+                cout << "    X                            X    " << endl;
+                cout << "XXXXX    XXXXX          XXXXX    XXXXX" << endl;
+                cout << "X   X    X   X          X   X    X   X" << endl;
+                cout << "X   X    X   X          X   X    X   X" << endl;
+                cout << "X   X    XXXXX          XXXXX    X   X" << endl;
+                cout << "XXXXX                            XXXXX" << endl;
+                cout << "    X         XXXXXXXXXX         X    " << endl;
+                cout << "    X                            X    " << endl;
+                cout << "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX    " << endl;
+                cout << "                 X  X                  " << endl;
+                cout << "           XXXXXXXXXXXXXXXX           " << endl;
+                cout << "        XXXX              XXXX        " << endl;
+                cout << "        X  X              X  X        " << endl;
+                cout << "        XXXX              XXXX        " << endl;
+                cout << "        X  X              X  X        " << endl;
+                cout << "        X  X              X  X        " << endl;
+                cout << "        XXXX              XXXX        " << endl;
+                cout << "        X  X  XXXXXXXXXX  X  X        " << endl;
+                cout << "        X  X  X        X  X  X        " << endl;
+                cout << "        X  X  X        X  X  X        " << endl;
+                cout << "        XXXXXXXXXXXXXXXXXXXXXX        " << endl;
+                cout << endl;
                 break;
             case 3:
+                cout << endl;
                 cout << "            X            " << endl;
                 cout << "           X X           " << endl;
                 cout << "         XX   XX         " << endl;
@@ -76,8 +81,10 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "   X  X            X  X  " << endl;
                 cout << "   X  X            X  X  " << endl;
                 cout << "   X  X            X  X  " << endl;
+                cout << endl;
                 break;
             case 4:
+                cout << endl;
                 cout << " X                     X " << endl;
                 cout << "X X                   X X" << endl;
                 cout << "X  XXXXXXXXXXXXXXXXXXX  X" << endl;
@@ -100,6 +107,7 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "   X  X            X  X  " << endl;
                 cout << "   X  X            X  X  " << endl;
                 cout << "   X  X            X  X  " << endl;
+                cout << endl;
                 break;
         }        
     }
@@ -108,6 +116,7 @@ void drawscena(int player,string action,bool alive = true){
         if(alive){
             switch(player){
                 case 1:
+                    cout << endl;
                     cout << "        XXXXXXXXX                   " << endl;
                     cout << "     XXX         XXX                " << endl;
                     cout << "   XX               XX              " << endl;
@@ -131,9 +140,11 @@ void drawscena(int player,string action,bool alive = true){
                     cout << "   X  X            X                " << endl;
                     cout << "   X  X            X                " << endl;
                     cout << "   X  X            X                " << endl;
+                    cout << endl;
                 
                     break;
                 case 2:
+                        cout << endl;
                         cout << "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               " << endl;
                         cout << "    X                            X               " << endl;
                         cout << "    X                            X               " << endl;
@@ -157,10 +168,11 @@ void drawscena(int player,string action,bool alive = true){
                         cout << "        X  X  X        X  X                       " << endl;
                         cout << "        X  X  X        X  X                       " << endl;
                         cout << "        XXXXXXXXXXXXXXXXXXX                      " << endl;
-
+                        cout << endl;
                 
                     break;
                 case 3:
+                    cout << endl;
                     cout << "            X            " << endl;
                     cout << "           X X           " << endl;
                     cout << "         XX   XX                  /" << endl;
@@ -181,9 +193,11 @@ void drawscena(int player,string action,bool alive = true){
                     cout << "   X  X            X  " << endl;
                     cout << "   X  X            X  " << endl;
                     cout << "   X  X            X  " << endl;
+                    cout << endl;
 
                     break;
                 case 4:
+                    cout << endl;
                     cout << " X                     X          " << endl;
                     cout << "X X                   X X           " << endl;
                     cout << "X  XXXXXXXXXXXXXXXXXXX  X"<<endl;
@@ -207,7 +221,7 @@ void drawscena(int player,string action,bool alive = true){
                     cout << "   X  X            X                " << endl;
                     cout << "   X  X            X                " << endl;
                     cout << "   X  X            X                " << endl;
-
+                    cout << endl;
                     break;
             }    
         }
@@ -215,6 +229,7 @@ void drawscena(int player,string action,bool alive = true){
         else{
             switch(player){
                 case 1:
+                cout << endl;
                 cout << "        XXXXXXXXX                   " << endl;
                 cout << "     XXX         XXX                " << endl;
                 cout << "   XX               XX              " << endl;
@@ -238,10 +253,11 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "   X  X            X                " << endl;
                 cout << "   X  X            X                " << endl;
                 cout << "   X  X            X                " << endl;
-                
+                cout << endl;
                     break;
                 
                 case 2:
+                    cout << endl;
                     cout << "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               " << endl;
                     cout << "    X                           XX               " << endl;
                     cout << "    X                          XX                " << endl;
@@ -265,8 +281,10 @@ void drawscena(int player,string action,bool alive = true){
                     cout << "        X  X  X        X  X                       " << endl;
                     cout << "        X  X  X        X  X                       " << endl;
                     cout << "        XXXXXXXXXXXXXXXXXXX                      " << endl;
+                    cout << endl;
                     break;
                 case 3:
+                    cout << endl;
                     cout << "            X            " << endl;
                     cout << "           X X           " << endl;
                     cout << "         XX   X                    /" << endl;
@@ -287,9 +305,11 @@ void drawscena(int player,string action,bool alive = true){
                     cout << "   X  X            X  " << endl;
                     cout << "   X  X            X  " << endl;
                     cout << "   X  X            X  " << endl;
+                    cout << endl;
 
                     break;
                 case 4:
+                    cout << endl;
                     cout << " X                                      " << endl;
                     cout << "X X                                 " << endl;
                     cout << "X  XXXXXXXXXXXXXXXXXX              XX              " << endl;
@@ -313,6 +333,7 @@ void drawscena(int player,string action,bool alive = true){
                     cout << "   X  X            X                " << endl;
                     cout << "   X  X            X                " << endl;
                     cout << "   X  X            X                " << endl;
+                    cout << endl;
 
                     break;
             }    
@@ -322,6 +343,7 @@ void drawscena(int player,string action,bool alive = true){
     if(action == "WIN"){
         switch(player){
             case 1:
+                cout << endl;
                 cout << "                   XXXXXXXXX                    " << endl;
                 cout << "                XXX         XXX                " << endl;
                 cout << "              XX               XX              " << endl;
@@ -345,8 +367,10 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "              X                  X              " << endl;
                 cout << "              X                  X              " << endl;
                 cout << "              X                  X              " << endl;
+                cout << endl;
                 break;
             case 2:
+                cout << endl;
                 cout << "──     ──       XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX        ──     ──" << endl;
                 cout << "││     ││       X                            X        ││     ││" << endl;
                 cout << "─────────       X                            X        ─────────" << endl;
@@ -370,9 +394,11 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "                       X  X        X  X                        " << endl;
                 cout << "                       X  X        X  X                        " << endl;
                 cout << "                       XXXXXXXXXXXXXXXX                        " << endl;
+                cout << endl;
 
                 break;
             case 3:
+                cout << endl;
                 cout << "                        X               " << endl;
                 cout << "                       X  X                    " << endl;
                 cout << "                     X      X                   " << endl;
@@ -396,9 +422,11 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "              X                  X              " << endl;
                 cout << "              X                  X              " << endl;
                 cout << "              X                  X              " << endl;
+                cout << endl;
 
                 break;
             case 4:
+                cout << endl;
                 cout << "            X                     X            " << endl;
                 cout << "           X X                   X X           " << endl;
                 cout << "           X  XXXXXXXXXXXXXXXXXXX  X           " << endl;
@@ -422,6 +450,7 @@ void drawscena(int player,string action,bool alive = true){
                 cout << "              X                  X              " << endl;
                 cout << "              X                  X              " << endl;
                 cout << "              X                  X              " << endl;
+                cout << endl;
 
                 break;
         }        
