@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -20,10 +20,8 @@ void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<stri
 bool checkIfAllHandsEmpty(const vector<vector<char>>& hands);
 void reshuffleDeck(vector<char>& deck, vector<char>& discardedCards);
 bool checkIfHandEmpty(const vector<vector<char>>& hands,int currentPlayer);
-
-
-
-
+void clearScreen() ;
+   
 
 int main() {
     srand(time(0));
@@ -40,6 +38,7 @@ int main() {
     } while (numPlayers < 2 || numPlayers > 4);
 
     for (int i = 0; i < numPlayers; ++i) {
+        clearScreen(); 
         string name;
         drawscena(i+1,"PLAYCARD");
         cout << "Enter name of player " << i + 1 << ": ";
@@ -67,9 +66,9 @@ void gameLoop(vector<string>& players, int numPlayers) {
     vector<int> shootCount(numPlayers, 0);  // เก็บจำนวนการยิงของผู้เล่นแต่ละคน
 
     tableCard = tableCards[rand() % tableCards.size()];
+    clearScreen();   
     cout << "\n=== Round " << roundCount << " ===" << endl;
     cout << "The table card is set. Players must claim to play: " << tableCard << endl;
-
     dealNewHands(hands, deck, players.size());
 
     while (gameRunning) {
@@ -102,8 +101,10 @@ void gameLoop(vector<string>& players, int numPlayers) {
             roundCount++;
             if (roundCount > 1 && countSurvivors(alive) > 1) {
                 tableCard = tableCards[rand() % tableCards.size()];
+                
                 cout << "\n=== Round " << roundCount << " ===" << endl;
                 cout << "The table card is set. Players must claim to play: " << tableCard << endl;
+               
             }
         }
 
@@ -113,8 +114,10 @@ void gameLoop(vector<string>& players, int numPlayers) {
             dealNewHands(hands, deck, numPlayers);
             reshuffleDeck(deck, discardedCards);
             roundCount++;
+            
             cout << "\n=== Round " << roundCount << " ===" << endl;
             cout << "The table card is set. Players must claim to play: " << tableCard << endl;
+           
         }
 
         currentPlayer = (currentPlayer + 1) % numPlayers;
@@ -123,7 +126,7 @@ void gameLoop(vector<string>& players, int numPlayers) {
 
 
 void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck, vector<string>& players, vector<bool>& alive, vector<char>& tableCards, vector<char>& discardedCards, int& roundCount, bool& changeRound, vector<int>& shootCount,int numPlayers) {
-    //if (hands[currentPlayer].empty()) {dealNewHands(hands, deck, players.size());}
+    
     
     if (checkIfHandEmpty(hands , currentPlayer)){
         currentPlayer = (currentPlayer + 1) % numPlayers;
@@ -194,14 +197,14 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
         hands[currentPlayer].erase(find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card));
         discardedCards.push_back(card);
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////
+
     
 
     int nextPlayer = (currentPlayer + 1) % players.size();
     while (!alive[nextPlayer]) {
         nextPlayer = (nextPlayer + 1) % players.size();
     }
-
+    clearScreen(); 
     cout << players[nextPlayer] << ", do you challenge " << players[currentPlayer] << "'s play? (X to challenge, any key to continue): ";
     char challenge;
     cin >> challenge;
@@ -253,7 +256,7 @@ bool challengePlayer(int currentPlayer, int nextPlayer, vector<char>& tableCards
 // กระบวนการลงโทษผู้โกหก
 void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<string>& players, vector<bool>& alive, int& roundCount, vector<int>& shootCount) {
     int victimIndex = lying ? currentPlayer : nextPlayer;
-    
+    clearScreen(); 
     // ผู้ที่ท้าทายผิดจะต้องถูกยิง
     if (!lying) {
         victimIndex = nextPlayer;  // ถ้าผู้ท้าทายผิด, ผู้ท้าทายจะถูกยิง
@@ -271,12 +274,15 @@ void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<stri
         drawscena(victimIndex+1,"CHALLENGE",0);
         cout << "BANG! " << players[victimIndex] << " is eliminated!" << endl;
         alive[victimIndex] = false;
+        
     } else {
         drawscena(victimIndex+1,"CHALLENGE");
         cout << "CLICK! No bullet. " << players[victimIndex] << " survives." << endl;
+        
     }
 
     shootCount[victimIndex]++;  // เพิ่มจำนวนครั้งที่ยิงของผู้เล่น
+    
 }
 
 
@@ -345,6 +351,12 @@ void dealNewHands(vector<vector<char>>& hands, vector<char>& deck, int numPlayer
     }
 }
 
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls"); 
+   
+    #endif
+}
 
 
 
