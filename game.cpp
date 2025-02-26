@@ -7,6 +7,7 @@
 #include <limits>
 #include "Untitled-1.cpp"
 #include <random>
+#include <locale>
 using namespace std;
 
 vector<char> createDeck();
@@ -25,7 +26,7 @@ void clearScreen() ;
 
 int main() {
     srand(time(0));
-    
+    setlocale(LC_ALL, "");
     cout << "Welcome to Liar's Bar!" << endl;
 
     vector<string> players;
