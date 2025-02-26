@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <sstream>
 #include <limits>
+#include "Untitled-1.cpp"
 #include <random>
 using namespace std;
 
@@ -40,6 +41,7 @@ int main() {
 
     for (int i = 0; i < numPlayers; ++i) {
         string name;
+        drawscena(i+1,"PLAYCARD");
         cout << "Enter name of player " << i + 1 << ": ";
         getline(cin, name);
         players.push_back(name);
@@ -77,6 +79,7 @@ void gameLoop(vector<string>& players, int numPlayers) {
             for (int i = 0; i < numPlayers; ++i) {
                 if (alive[i]) {
                     cout << players[i] << " is the winner!" << endl;
+                    drawscena(i+1,"WIN");
                     gameRunning = false;
                     break;
                 }
@@ -129,6 +132,7 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
 
 
     string player = players[currentPlayer];
+    drawscena(currentPlayer+1,"PLAYCARD");
     cout << "\n" << player << "'s turn!" << endl;
     cout << "Your hand: ";
     displayHand(hands[currentPlayer]);
@@ -264,9 +268,11 @@ void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<stri
     cout << players[victimIndex] << " faces a " << chanceToShoot << "/6 chance to be shot!" << endl;
 
     if (russianRoulette <= chanceToShoot) {
+        drawscena(victimIndex+1,"CHALLENGE",0);
         cout << "BANG! " << players[victimIndex] << " is eliminated!" << endl;
         alive[victimIndex] = false;
     } else {
+        drawscena(victimIndex+1,"CHALLENGE");
         cout << "CLICK! No bullet. " << players[victimIndex] << " survives." << endl;
     }
 
