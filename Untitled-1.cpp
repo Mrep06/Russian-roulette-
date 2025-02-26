@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-void drawscena(int player,string action,bool alive = true){
+void drawscena(int player,string action,int alive = 1){
     if(action == "PLAYCARD"){
         switch(player){
             case 1:
@@ -113,7 +113,7 @@ void drawscena(int player,string action,bool alive = true){
     }
     
     if(action == "CHALLENGE"){
-        if(alive){
+        if(alive == 1){
             switch(player){
                 case 1:
                     cout << endl;
