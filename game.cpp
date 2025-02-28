@@ -154,49 +154,47 @@ void playTurn(int currentPlayer, vector<vector<char>>& hands, vector<char>& deck
 
 
 //การรับไพ่ที่ผู้เล่นต้องการลง และตรวจสอบว่าไพ่ที่เลือกเป็นไพ่ที่ผู้เล่นมีอยู่จริงหรือไม่ หากไม่มี จะให้ผู้เล่นกรอกใหม่   
-    vector<char> inputCards;
-    char cardInput;
-    cout << "Enter the cards you claim to play (e.g., Q K A): ";
-    cin.ignore();
-    string input;
+vector<char> inputCards;
+char cardInput;
+cout << "Enter the cards you claim to play (e.g., Q K A): ";
+cin.ignore();
+string input;
+getline(cin, input);
+stringstream ss(input);
+while (ss >> cardInput) {
+    inputCards.push_back(cardInput);
+}
+
+bool valid = true;
+for (char card : inputCards) {
+    if (find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card) == hands[currentPlayer].end()) {
+        valid = false;
+        break;
+    }
+}
+
+while (!valid || inputCards.size() != numCards) {
+    cout << "You don't have those cards! Please enter valid cards (e.g., Q K A): ";
     getline(cin, input);
     stringstream ss(input);
+    inputCards.clear();
     while (ss >> cardInput) {
         inputCards.push_back(cardInput);
     }
 
-    bool valid = true;
+    valid = true;
     for (char card : inputCards) {
         if (find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card) == hands[currentPlayer].end()) {
             valid = false;
             break;
         }
     }
+}
 
-    while (!valid || inputCards.size() != numCards) {
-        cout << "You don't have those cards! Please enter valid cards (e.g., Q K A): ";
-        getline(cin, input);
-        cin.ignore();
-        stringstream ss(input);
-        inputCards.clear();
-        while (ss >> cardInput) {
-            inputCards.push_back(cardInput);
-        }
-
-        valid = true;
-        for (char card : inputCards) {
-            if (find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card) == hands[currentPlayer].end()) {
-                valid = false;
-                break;
-            }
-        }
-    }
-
-    for (char card : inputCards) {
-        hands[currentPlayer].erase(find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card));
-        discardedCards.push_back(card);
-    }
-
+for (char card : inputCards) {
+    hands[currentPlayer].erase(find(hands[currentPlayer].begin(), hands[currentPlayer].end(), card));
+    discardedCards.push_back(card);
+}
     
 
     int nextPlayer = (currentPlayer + 1) % players.size();
@@ -255,7 +253,7 @@ bool challengePlayer(int currentPlayer, int nextPlayer, vector<char>& tableCards
 // กระบวนการลงโทษผู้โกหก
 void processChallenge(bool lying, int currentPlayer, int nextPlayer, vector<string>& players, vector<bool>& alive, int& roundCount, vector<int>& shootCount) {
     int victimIndex = lying ? currentPlayer : nextPlayer;
-    clearScreen(); 
+    // clearScreen(); 
     // ผู้ที่ท้าทายผิดจะต้องถูกยิง
     if (!lying) {
         victimIndex = nextPlayer;  // ถ้าผู้ท้าทายผิด, ผู้ท้าทายจะถูกยิง
